@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Advertises Not Found";
+}
+    <div style="padding-bottom:300px; margin-top:260px;">
+        <div class="alert alert-danger mt-2">
+            <h1>Error 404</h1>
+            <hr />
+            <h5>Advertises with Id = @ViewBag.Id.ToString() Can not be found</h5>
+        </div>
+        <a asp-controller="Advertises" asp-action="Index" class="btn btn-outline-danger" style="width:auto">
+            Click here to see all Advertises
+        </a>
+    </div>

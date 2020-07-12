@@ -1,0 +1,217 @@
+﻿@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@model ViewHome
+@{
+    List<Category> categories = ViewBag.Categories;
+    var user = await userManager.GetUserAsync(User);
+    IList<string> roles = new List<string>();
+    if (user != null)
+    {
+        var userin = Task.Run(async () => await userManager.FindByIdAsync(user.Id)).Result;
+        roles = Task.Run(async () => await userManager.GetRolesAsync(userin)).Result;
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - shopbalo</title>
+    <link href="~/lib/bootstrap4/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <script src="~/lib/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <link href="~/lib/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet" />
+    <link href="~/lib/OwlCarousel2-2.2.1/animate.css" rel="stylesheet" />
+    <link href="~/css/main_styles.css" rel="stylesheet" />
+    <link href="~/css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap4/popper.js"></script>
+    <script src="~/lib/bootstrap4/bootstrap.min.js"></script>
+    <script src="~/lib/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/lib/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="~/lib/easing/easing.js"></script>
+    <script src="~/js/custom.js"></script>
+</head>
+<body style="background-color:#f8f8ff">
+      
+    <div class="container">
+
+        <!-- Main Navigation -->
+        <!-- Header -->
+        <header class="header trans_300">
+
+            <!-- Top Navigation -->
+
+            <div class="top_nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="top_nav_left">Giao hàng miễn phí cho hóa đơn trên 2,000,000 VND</div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="top_nav_right">
+                                <ul class="top_nav_menu">
+                                    <li class="account">
+                                        @if (signInManager.IsSignedIn(User))
+                                        {
+                                            <a href="#" style="font-size:20px">
+                                                @user.FullName
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="account_selection" style="width:150px;float:left">
+                                                @if (roles.Count > 0)
+                                                {
+                                                    <li><a style="float: left" asp-controller="ProductsManage" asp-action="Index"><i class="fa fa-tasks" aria-hidden="true"></i>Management</a></li>
+                                                }
+                                                <li><a style="float: left" asp-controller="Account" asp-action="Logout"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign out</a></li>
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <a href="#">
+                                                My Account
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="account_selection" style="width:150px;">
+                                                <li><a style="float: left" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                                <li><a style="float: left" asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                            </ul>
+                                        }
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="main_nav_container">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="logo_container row">
+                                <a asp-controller="Home" asp-action="Index">ShopBag<span>HPT</span></a>
+                                <form class="ml-5 p-sm-1" enctype="multipart/form-data" asp-controller="Home" asp-action="Search" method="post">
+                                    <input asp-for="key" style="border:1px solid" placeholder=" search">
+                                    <button type="submit">Tìm kiếm</button>
+                                </form>
+                            </div>
+                            <nav class="navbar navbar-expand-md">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                                    <ul class="navbar_menu">
+                                        @if (categories != null)
+                                        {
+                                            foreach (Category category in categories)
+                                            {
+                                                <li><a asp-controller="Home" asp-action="Balos" asp-route-id="@category.CategoryId">@category.CategoryName</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+
+        <div class="fs_menu_overlay"></div>
+        <div class="hamburger_menu">
+            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="hamburger_menu_content text-right">
+                <ul class="menu_top_nav">
+                    <li class="menu_item has-children">
+                    <li class="menu_item has-children">
+                        <a href="#">
+                            My Account
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu_item"><a href="#">home</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        @RenderBody()
+
+        <!-- Benefit -->
+        <div class="best_sellers">
+            <div class="benefit">
+                <div class="container">
+                    <div class="row benefit_row">
+                        <div class="col-lg-3 benefit_col">
+                            <div class="benefit_item d-flex flex-row align-items-center">
+                                <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                                <div class="benefit_content">
+                                    <h6>free shipping</h6>
+                                    <p>Suffered Alteration in Some Form</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 benefit_col">
+                            <div class="benefit_item d-flex flex-row align-items-center">
+                                <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                                <div class="benefit_content">
+                                    <h6>cach on delivery</h6>
+                                    <p>The Internet Tend To Repeat</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 benefit_col">
+                            <div class="benefit_item d-flex flex-row align-items-center">
+                                <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                                <div class="benefit_content">
+                                    <h6>45 days return</h6>
+                                    <p>Making it Look Like Readable</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 benefit_col">
+                            <div class="benefit_item d-flex flex-row align-items-center">
+                                <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                                <div class="benefit_content">
+                                    <h6>opening all week</h6>
+                                    <p>8AM - 09PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer_nav_container">
+                            <div class="cr">©2018 All Rights Reserverd. This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#">Colorlib</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        @RenderSection("Scripts", required: false)
+    </div>
+</body>
+</html>

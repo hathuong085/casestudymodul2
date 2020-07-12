@@ -1,0 +1,70 @@
+﻿@model List<Balo>
+@{ 
+    ViewBag.Title = "ProductsManagement";
+    List<Category> categories = ViewBag.Categories;
+}
+
+    <div class="card shadow mb-4">
+        <div class="card-header row py-3">
+            <h1>Product management</h1>
+        </div>
+        <div class="card-body">
+            <div class="row form-group" style="padding-left:10px">
+                <div class="row">
+                    <p class="m-0 font-weight-bold text-primary mr-5">All Product  >>&nbsp;</p>
+                    @if (categories != null && categories.Any())
+                    {
+                        foreach (var cate in categories)
+                        {
+                            <p class="nav-item mr-3"><a asp-controller="ProductsManage" asp-action="Productofcategory" asp-route-id="@cate.CategoryId">@cate.CategoryName</a></p>
+                        }
+                    }
+                </div>
+
+                <div class="ml-auto" style="padding-right:30px">
+                    <a asp-controller="ProductsManage" asp-action="Create" class="btn btn-warning" style="width:150px">Create</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Balo Name</th>
+                            <th>Trademark</th>
+                            <th>Size</th>
+                            <th>Material</th>
+                            <th>Description</th>
+                            <th>Color</th>
+                            <th>Price</th>
+                            <th>Sale</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var balo in Model)
+                            {
+                                <tr>
+                                    <td>@balo.BaloId</td>
+                                    <td>@balo.BaloName</td>
+                                    <td>@balo.Trademark</td>
+                                    <td>@balo.Size</td>
+                                    <td>@balo.Material</td>
+                                    <td>@balo.Description</td>
+                                    <td>@balo.Color</td>
+                                    <td>@balo.Price</td>
+                                    <td>@balo.Sale</td>
+                                    <td>
+                                        <a class="btn btn-primary" asp-controller="ProductsManage" asp-action="Edit" asp-route-id="@balo.BaloId" alt="Edit"><i class="fa fa-edit"></i></a>
+                                        <a class="btn btn-danger" asp-controller="ProductsManage" asp-action="Edit" asp-route-id="@balo.BaloId" alt="Delete"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

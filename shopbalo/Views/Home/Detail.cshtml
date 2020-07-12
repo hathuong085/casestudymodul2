@@ -1,0 +1,88 @@
+﻿@inject ICategoryRepository categoryRepository;
+@model ViewHome
+@{
+    ViewBag.Title = "Detail";
+    var categoryname = categoryRepository.Get(Model.balo.CategoryId).CategoryName;
+}
+    <div class="row" style="margin-top:260px;margin-bottom:140px">
+
+        <div class="col-sm-9" style="border:2px solid;">
+            <h4 class="mt-3"><a asp-controller="Home" asp-action="Index">Trang chủ</a> >> Sản phẩm >> @categoryname</h4>
+            <hr />
+            <div style="margin:50px;">
+                <h2 class="mb-3">@Model.balo.BaloName</h2>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <img src="~/images/balos/@Model.balo.Image" style="width:80%;height:80%" />
+                        @if (Model.balo.Sale > 0)
+                        {
+                            <div class="row mt-3">
+                                <h5 class="col-6 float-sm-left">Giá KM: <span style="color:red">@(Model.balo.Price- Model.balo.Price* Model.balo.Sale/100)</span></h5>
+                                <h5 class="col-6 float-sm-right" style="text-decoration:line-through">@Model.balo.Price</h5>
+                            </div>
+                        }
+                        else
+                        {
+                            <h5>Giá : <span style="color:red">@Model.balo.Price</span></h5>
+                        }
+                    </div>
+                    <div class="col-sm-6 pl-sm-3">
+                        <p style="color:red;">Miêu tả :</p>
+                        <p>Hãng sản xuất: @Model.balo.Trademark</p>
+                        <p>Kích thước: @Model.balo.Size</p>
+                        <p>Chất liệu: @Model.balo.Material</p>
+                        @if (Model.balo.Description != null)
+                        {
+                            <p>@Model.balo.Description</p>
+                        }
+                        <p>Màu sắc: @Model.balo.Color</p>
+                        @if (Model.balo.Sale > 0)
+                        {
+                            <h3 style="color:red">Sale:   @Model.balo.Sale%</h3>
+                        }
+                        <hr />
+                        <h4>Mua ngay:</h4>
+                        <div class="row  pl-sm-3">
+                            <h5>Số lượng:    <input type="number" value="1" min="1" style="width:60px;height:40px;font-size:30px;text-align:center" /></h5>
+                            <a class="btn btn-success" style="margin-left:auto;"><i class="fa fa-cart-plus fa-3x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <table border="2">
+                <tr>
+                    <th colspan="2" style="text-align:center">
+                        <h4> Sản phẩm @categoryname</h4>
+                    </th>
+                </tr>
+                @if (Model.balos != null)
+                {
+                    foreach (Balo balo in Model.balos)
+                    {
+                        <tr class="mb-1">
+                            <td style="width:40%;height:100px">
+                                <a asp-controller="Home" asp-action="Detail" asp-route-id="@balo.BaloId"><img src="~/images/balos/@balo.Image" style="width:100%;height:100%" /></a>
+                            </td>
+                            <td>
+                                <a asp-controller="Home" asp-action="Detail" asp-route-id="@balo.BaloId">
+                                    <p style="font-size: 12px;margin-bottom:5px;">@balo.BaloName</p>
+                                    @if (balo.Sale > 0)
+                                    {
+                                        <p style="text-decoration:line-through;font-size:14px;margin-bottom:5px;">@balo.Price</p>
+                                        <p style="font-size: 14px;margin-bottom:5px;">Giá KM: <span style="color:red">@(balo.Price-balo.Price*balo.Sale/100)</span></p>
+                                    }
+                                    else
+                                    {
+                                        <p style="font-size: 14px;margin-bottom:5px;">Giá : <span style="color:red">@balo.Price</span></p>
+                                    }
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+        </div>
+    </div>

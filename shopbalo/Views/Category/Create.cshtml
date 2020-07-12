@@ -1,0 +1,52 @@
+﻿@model CategoryCreateViewModel
+@{
+    ViewBag.Title = "Create Role";
+}
+<h3>Role Manahement &gt; @ViewBag.Title</h3>
+<form enctype="multipart/form-data" asp-controller="Category" asp-action="Create" method="post">
+    <div style="border:2px solid">
+        <div style="border:1px solid;margin:3px">
+            <div style="margin:15px;margin-top:25px">
+                <div class="row form-group">
+                    <div class="col-sm-3">
+                        <label asp-for="CategoryName"></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="CategoryName" class="form-control" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-3">
+                        <label asp-for="CategoryImg"></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="custom-file">
+                            <input class="custom-file-input" asp-for="CategoryImg">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <img id="avatar" src="~/images/AvatarShop/avatar.jpg" style="width:200px;height:200px" />
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row form-group justify-content-center mt-3">
+                    <button type="submit" class="btn btn-primary form-group mr-5" style="width:100px;">Create</button>
+                    <a asp-controller="Category" asp-action="Index" class="btn btn-warning form-group" style="width:100px;">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Script{
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                $("#avatar").attr("src", window.URL.createObjectURL($(this)[0].files[0]));
+            });
+        });
+    </script>
+}

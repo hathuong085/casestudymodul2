@@ -1,0 +1,51 @@
+﻿@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+<div class="container mt-30 ml-50" style="margin-top:260px;margin-bottom:140px">
+    <div class="col-sm-6 offset-sm-3 " style="margin-bottom:50px;margin-top:50px;">
+        <form enctype="multipart/form-data" asp-controller="Account" asp-action="Login" method="post">
+            <div style="border:2px solid">
+                <div style="border:1px solid;margin:3px;background-color:white">
+                    <div style="margin:15px;margin-top:20px">
+                        <input hidden asp-for="returnUrl" value="@ViewBag.returnUrl" />
+                        <div style="margin-bottom:20px">
+                            <h1 class="text-center" style="font-size:60px">Login</h1>
+                        </div>
+                        <div class="row form-group mt-20px">
+                            <div class="col-sm-3">
+                                <label asp-for="Email"></label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                                <label asp-for="PassWord"></label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input asp-for="PassWord" class="form-control" />
+                                <span asp-validation-for="PassWord" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                                <label asp-for="Rememberme">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input asp-for="Rememberme" type="checkbox" /> Remember Me
+                            </div>
+                        </div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="row form-group justify-content-center mt-3">
+                            <button type="submit" class="btn btn-primary form-group mr-5" style="width:100px;">Login</button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-warning form-group" style="width:100px;">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
